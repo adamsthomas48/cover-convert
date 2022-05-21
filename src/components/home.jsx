@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-
+import axios from 'axios'
 
 
 
@@ -12,6 +12,9 @@ export const Home = () => {
   
   
     const [token, setToken] = useState("")
+    const [searchKey, setSearchKey] = useState("")
+    const [artists, setArtists] = useState([])
+    const [user, setUser] = useState(null)
   
       useEffect(() => {
           const hash = window.location.hash
@@ -22,16 +25,54 @@ export const Home = () => {
   
               window.location.hash = ""
               window.localStorage.setItem("token", token)
+              
           }
   
           setToken(token)
+          //getPlaylists()
           console.log(token)
+          console.log(user)
   
       }, [])
+
+      
   
       const logout = () => {
           setToken("")
           window.localStorage.removeItem("token")
+      }
+
+      const searchArtists = async (e) => {
+        e.preventDefault()
+        const {data} = await axios.get("https://api.spotify.com/v1/search", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            params: {
+                q: searchKey,
+                type: "artist"
+            }
+        })
+    
+        setArtists(data.artists.items)
+        console.log(data)
+      }
+
+      const getPlaylists = async (authToken) => {
+          
+          const {currUser} = await axios.get(
+              'https://api.spotify.com/v1/me/playlists', {
+                  params: { limit: 50, offset: 0 },
+                  headers: {
+                      Accept: 'application/json',
+                      Authorization: 'Bearer ' + token,
+                      'Content-Type': 'application/json',
+                  },
+          })
+          
+
+          setUser(currUser)
+          
       }
   
       return (
@@ -39,9 +80,18 @@ export const Home = () => {
               <header className="App-header">
                   <h1>Spotify React</h1>
                   {!token ?
+                      
                       <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login
                           to Spotify</a>
-                      : <button onClick={logout}>Logout</button>}
+                      : <div>
+                          <button onClick={logout}>Logout</button>
+                          <form onSubmit={searchArtists}>
+                            <input type="text" onChange={e => setSearchKey(e.target.value)}/>
+                            <button type={"submit"}>Search</button>
+                          </form>
+                          <button onClick={e => getPlaylists(token)}>Get Playlists</button>
+                        </div>
+                        }
               </header>
               
           </div>
