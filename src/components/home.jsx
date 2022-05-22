@@ -15,6 +15,7 @@ export const Home = () => {
     const [searchKey, setSearchKey] = useState("")
     const [artists, setArtists] = useState([])
     const [user, setUser] = useState(null)
+    const [playlists, setPlaylists] = useState([])
   
       useEffect(() => {
           const hash = window.location.hash
@@ -38,6 +39,7 @@ export const Home = () => {
   
       const logout = () => {
           setToken("")
+          setPlaylists([])
           window.localStorage.removeItem("token")
       }
 
@@ -62,6 +64,9 @@ export const Home = () => {
         const options = {
             method: 'GET',
             url: 'https://api.spotify.com/v1/me/playlists',
+            params: {
+                limit: 50,
+            },
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Accept": "application/json",
@@ -70,38 +75,16 @@ export const Home = () => {
         }
 
         const res = await axios(options);
-        console.log(res)
-          
-        //   const {currUser} = await axios.get(
-        //       'https://api.spotify.com/v1/me', {
-                  
-        //           headers: {
-                      
-        //               Authorization: `Bearer ${token}`,
-        //               "Accept": "application/json",
-        //               "Content-Type": "application/json",
-        //           },
-        //   })
-
-        //   const options = {
-        //     method: 'GET',
-        //     url: `https://api.spotify.com/v1/search?q=${this.state.query}&type=track`,
-        //     headers: {
-        //         'Authorization': `Bearer ${config.Bearer}`,
-        //         "Accept": "application/json",
-        //         "Content-Type": "application/json",
-        //     }
-        // }
-        // const res = await axios(options);
-        // console.log(res)
-          
+        console.log(res.data)
+        setPlaylists(res.data.items)
+                   
           
       }
   
       return (
           <div className="App">
               <header className="App-header">
-                  <h1>Spotify React</h1>
+                  <h1>Cover Convert</h1>
                   {!token ?
                       
                       <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login
@@ -115,6 +98,16 @@ export const Home = () => {
                           <button onClick={e => getPlaylists(token)}>Get Playlists</button>
                         </div>
                         }
+
+                    {playlists != null &&
+                        <div>
+                            {playlists.map((playlist) => (
+                                <div key={playlist.id}>
+                                    <h2>{playlist.name}</h2>
+                                </div>
+                            ))}
+                        </div>
+                    }
               </header>
               
           </div>
