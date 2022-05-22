@@ -29,9 +29,8 @@ export const Home = () => {
           }
   
           setToken(token)
-          //getPlaylists()
-          console.log(token)
-          console.log(user)
+          
+          
   
       }, [])
 
@@ -59,19 +58,43 @@ export const Home = () => {
       }
 
       const getPlaylists = async (authToken) => {
-          
-          const {currUser} = await axios.get(
-              'https://api.spotify.com/v1/me/playlists', {
-                  params: { limit: 50, offset: 0 },
-                  headers: {
-                      Accept: 'application/json',
-                      Authorization: 'Bearer ' + token,
-                      'Content-Type': 'application/json',
-                  },
-          })
-          
 
-          setUser(currUser)
+        const options = {
+            method: 'GET',
+            url: 'https://api.spotify.com/v1/me/playlists',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            }
+        }
+
+        const res = await axios(options);
+        console.log(res)
+          
+        //   const {currUser} = await axios.get(
+        //       'https://api.spotify.com/v1/me', {
+                  
+        //           headers: {
+                      
+        //               Authorization: `Bearer ${token}`,
+        //               "Accept": "application/json",
+        //               "Content-Type": "application/json",
+        //           },
+        //   })
+
+        //   const options = {
+        //     method: 'GET',
+        //     url: `https://api.spotify.com/v1/search?q=${this.state.query}&type=track`,
+        //     headers: {
+        //         'Authorization': `Bearer ${config.Bearer}`,
+        //         "Accept": "application/json",
+        //         "Content-Type": "application/json",
+        //     }
+        // }
+        // const res = await axios(options);
+        // console.log(res)
+          
           
       }
   
