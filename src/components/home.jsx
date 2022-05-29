@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import axios from 'axios'
+import { PlaylistCard } from './playlist_card';
 
 
 
@@ -16,25 +17,26 @@ export const Home = () => {
     const [artists, setArtists] = useState([])
     const [user, setUser] = useState(null)
     const [playlists, setPlaylists] = useState([])
+    const [image, setImage] = useState("")
+    const [reducedImage, setReducedImage] = useState("")
   
       useEffect(() => {
           const hash = window.location.hash
           let token = window.localStorage.getItem("token")
+          getDataBlob("https://images.unsplash.com/photo-1653673068325-7892e1879bd9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=930&q=80")
+          
   
           if (!token && hash) {
               token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
   
               window.location.hash = ""
               window.localStorage.setItem("token", token)
-              
-          }
+          }    
   
           setToken(token)
-          
-          
   
       }, [])
-
+    
       
   
       const logout = () => {
@@ -80,13 +82,62 @@ export const Home = () => {
                    
           
       }
+
+      const parseURI = async (d) => {
+        var reader = new FileReader();    /* https://developer.mozilla.org/en-US/docs/Web/API/FileReader */
+        reader.readAsDataURL(d);          /* https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL */
+        return new Promise((res,rej)=> {  /* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise */
+          reader.onload = (e) => {        /* https://developer.mozilla.org/en-US/docs/Web/API/FileReader/onload */
+            res(e.target.result)
+          }
+        })
+      } 
+      
+      const getDataBlob = async (url) => {
+        var res = await fetch(url);
+        var blob = await res.blob();
+        var uri = await parseURI(blob);
+        setImage(uri)
+        reduce_image_file_size(uri)
+        return uri;
+      }
+
+      const reduce_image_file_size = async (base64Str, MAX_WIDTH = 450, MAX_HEIGHT = 450) => {
+        let resized_base64 = await new Promise((resolve) => {
+            let img = new Image()
+            img.src = base64Str
+            img.onload = () => {
+                let canvas = document.createElement('canvas')
+                let width = img.width
+                let height = img.height
+    
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width
+                        width = MAX_WIDTH
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height
+                        height = MAX_HEIGHT
+                    }
+                }
+                canvas.width = width
+                canvas.height = height
+                let ctx = canvas.getContext('2d')
+                ctx.drawImage(img, 0, 0, width, height)
+                resolve(canvas.toDataURL()) // this will return base64 image results after resize
+            }
+        });
+        setReducedImage(resized_base64)
+        return resized_base64;
+    }
   
       return (
-          <div className="App">
-              <header className="App-header">
+          <div>
+              <header>
                   <h1>Cover Convert</h1>
-                  {!token ?
-                      
+                  {!token ?  
                       <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login
                           to Spotify</a>
                       : <div>
@@ -102,13 +153,15 @@ export const Home = () => {
                     {playlists != null &&
                         <div>
                             {playlists.map((playlist) => (
-                                <div key={playlist.id}>
-                                    <h2>{playlist.name}</h2>
+                                <div key={playlist.id}> 
+                                    <PlaylistCard title={playlist.name} token={token} playlist={playlist} />
                                 </div>
                             ))}
                         </div>
                     }
               </header>
+              <img src={image} />
+              <img src={reducedImage} />
               
           </div>
       );    
