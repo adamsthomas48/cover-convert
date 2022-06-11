@@ -10,6 +10,7 @@ export const Home = () => {
     const REDIRECT_URI = "http://localhost:3000"
     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
     const RESPONSE_TYPE = "token"
+    const scopes = "ugc-image-upload user-read-private playlist-read-private playlist-modify-private playlist-modify-public playlist-read-collaborative"
   
   
     const [token, setToken] = useState("")
@@ -23,7 +24,7 @@ export const Home = () => {
       useEffect(() => {
           const hash = window.location.hash
           let token = window.localStorage.getItem("token")
-          getDataBlob("https://images.unsplash.com/photo-1653673068325-7892e1879bd9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=930&q=80")
+          getDataBlob("https://images.unsplash.com/photo-1654868739497-ee031a3d7088?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80")
           
   
           if (!token && hash) {
@@ -102,7 +103,7 @@ export const Home = () => {
         return uri;
       }
 
-      const reduce_image_file_size = async (base64Str, MAX_WIDTH = 450, MAX_HEIGHT = 450) => {
+      const reduce_image_file_size = async (base64Str, MAX_WIDTH = 400, MAX_HEIGHT = 400) => {
         let resized_base64 = await new Promise((resolve) => {
             let img = new Image()
             img.src = base64Str
@@ -129,16 +130,42 @@ export const Home = () => {
                 resolve(canvas.toDataURL()) // this will return base64 image results after resize
             }
         });
-        setReducedImage(resized_base64)
+        // ommit data:image/jpeg;base64, from resized_base64
+        let reduced_base64 = resized_base64.replace(/^data:image\/png;base64,/, '')
+        setReducedImage(reduced_base64)
+        console.log(reduced_base64)
         return resized_base64;
     }
+
+    const putImage = async (e) => {
+        // TODO: Put request to spotify api to upload image
+        console.log(reducedImage)
+
+        const options = {
+            method: 'PUT',
+            url: 'https://api.spotify.com/v1/playlists/7CWNRFdWsl6O7wkAK6TOAA/images',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "image/jpeg",
+            },
+            contentType: "image/jpeg",
+            data: reducedImage
+        }
+
+        console.log("putImage")
+        const res = await axios(options);
+        console.log(res.data)
+    }
+
+
+
   
       return (
           <div>
               <header>
                   <h1>Cover Convert</h1>
                   {!token ?  
-                      <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login
+                      <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${scopes}`}>Login
                           to Spotify</a>
                       : <div>
                           <button onClick={logout}>Logout</button>
@@ -147,6 +174,7 @@ export const Home = () => {
                             <button type={"submit"}>Search</button>
                           </form>
                           <button onClick={e => getPlaylists(token)}>Get Playlists</button>
+                          <button onClick={e => putImage(e)}>Put Image</button>
                         </div>
                         }
 
