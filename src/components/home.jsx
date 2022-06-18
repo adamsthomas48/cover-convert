@@ -33,10 +33,15 @@ export const Home = () => {
               window.location.hash = ""
               window.localStorage.setItem("token", token)
           }    
+
+          
   
           setToken(token)
   
       }, [])
+
+      
+
     
       
   
@@ -177,9 +182,9 @@ export const Home = () => {
                           <button onClick={e => putImage(e)}>Put Image</button>
                         </div>
                         }
-
+                    <div>
                     {playlists != null &&
-                        <div>
+                        <div className='container'>
                             {playlists.map((playlist) => (
                                 <div key={playlist.id}> 
                                     <PlaylistCard title={playlist.name} token={token} playlist={playlist} />
@@ -187,9 +192,9 @@ export const Home = () => {
                             ))}
                         </div>
                     }
+                    </div>
               </header>
-              <img src={image} />
-              <img src={reducedImage} />
+            
               
           </div>
       );    
