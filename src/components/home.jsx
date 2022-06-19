@@ -40,6 +40,27 @@ export const Home = () => {
           setToken(token)
           if(token !== null) {
             setLoggedIn(true)
+            async function getData() {
+            const options = {
+                method: 'GET',
+                url: 'https://api.spotify.com/v1/me/playlists',
+                params: {
+                    limit: 50,
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                }
+            }
+    
+            const res = await axios(options);
+            setPlaylists(res.data.items)
+            console.log(res.data)
+        }
+        getData()
+            
+            
             
           }
 
@@ -53,6 +74,11 @@ export const Home = () => {
                 <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${scopes}`}>Login</a>
             </div>
         )
+    }
+
+    if(loading) {
+        
+        return <div>Loading...</div>
     }
 
       
@@ -101,6 +127,7 @@ export const Home = () => {
         const res = await axios(options);
         console.log(res.data)
         setPlaylists(res.data.items)
+        setLoading(false)
                    
           
       }
@@ -190,12 +217,9 @@ export const Home = () => {
                           to Spotify</a>
                       : <div>
                           <button onClick={logout}>Logout</button>
-                          <form onSubmit={searchArtists}>
-                            <input type="text" onChange={e => setSearchKey(e.target.value)}/>
-                            <button type={"submit"}>Search</button>
-                          </form>
+                          
                           <button onClick={e => getPlaylists(token)}>Get Playlists</button>
-                          <button onClick={e => putImage(e)}>Put Image</button>
+                          
                         </div>
                         }
                     <div>
