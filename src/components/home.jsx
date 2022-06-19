@@ -11,7 +11,7 @@ export const Home = () => {
     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
     const RESPONSE_TYPE = "token"
     const scopes = "ugc-image-upload user-read-private playlist-read-private playlist-modify-private playlist-modify-public playlist-read-collaborative"
-  
+    const navigate = useNavigate();
   
     const [token, setToken] = useState("")
     const [searchKey, setSearchKey] = useState("")
@@ -20,11 +20,14 @@ export const Home = () => {
     const [playlists, setPlaylists] = useState([])
     const [image, setImage] = useState("")
     const [reducedImage, setReducedImage] = useState("")
+    const [loggedIn, setLoggedIn] = useState(false)
+    const [loading, setLoading] = useState(false)
   
       useEffect(() => {
           const hash = window.location.hash
           let token = window.localStorage.getItem("token")
-          getDataBlob("https://images.unsplash.com/photo-1654868739497-ee031a3d7088?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80")
+          
+          //getDataBlob("https://images.unsplash.com/photo-1578446303641-1cdffdd47c16?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3175&q=80")
           
   
           if (!token && hash) {
@@ -34,11 +37,23 @@ export const Home = () => {
               window.localStorage.setItem("token", token)
           }    
 
-          
-  
           setToken(token)
+          if(token !== null) {
+            setLoggedIn(true)
+            
+          }
+
   
       }, [])
+
+      if(!loggedIn) {
+        return (
+            <div>
+                <h1>Login</h1>
+                <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${scopes}`}>Login</a>
+            </div>
+        )
+    }
 
       
 
@@ -47,6 +62,7 @@ export const Home = () => {
   
       const logout = () => {
           setToken("")
+          setLoggedIn(false)
           setPlaylists([])
           window.localStorage.removeItem("token")
       }
@@ -108,7 +124,7 @@ export const Home = () => {
         return uri;
       }
 
-      const reduce_image_file_size = async (base64Str, MAX_WIDTH = 400, MAX_HEIGHT = 400) => {
+      const reduce_image_file_size = async (base64Str, MAX_WIDTH = 200, MAX_HEIGHT = 200) => {
         let resized_base64 = await new Promise((resolve) => {
             let img = new Image()
             img.src = base64Str
@@ -138,17 +154,17 @@ export const Home = () => {
         // ommit data:image/jpeg;base64, from resized_base64
         let reduced_base64 = resized_base64.replace(/^data:image\/png;base64,/, '')
         setReducedImage(reduced_base64)
-        console.log(reduced_base64)
+        //console.log(reduced_base64)
         return resized_base64;
     }
 
-    const putImage = async (e) => {
+    const putImage = async (playlistId) => {
         // TODO: Put request to spotify api to upload image
-        console.log(reducedImage)
+        
 
         const options = {
             method: 'PUT',
-            url: 'https://api.spotify.com/v1/playlists/7CWNRFdWsl6O7wkAK6TOAA/images',
+            url: `https://api.spotify.com/v1/playlists/${playlistId}/images`,
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "image/jpeg",
@@ -186,7 +202,7 @@ export const Home = () => {
                     {playlists != null &&
                         <div className='container'>
                             {playlists.map((playlist) => (
-                                <div key={playlist.id}> 
+                                <div key={playlist.id} onClick={(e) => navigate(`playlist/${playlist.id}/${token}`)}> 
                                     <PlaylistCard title={playlist.name} token={token} playlist={playlist} />
                                 </div>
                             ))}
