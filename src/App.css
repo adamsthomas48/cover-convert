@@ -39,8 +39,7 @@
 
 .row {
   display: flex;
-  flex-wrap: wrap;
-  padding: 0 4px;
+  flex-direction: row;
 }
 
 /* Create four equal columns that sits next to each other */
@@ -48,6 +47,14 @@
   flex: 25%;
   max-width: 25%;
   padding: 0 4px;
+}
+
+/* center items horizontally */
+.center {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .column img {

@@ -10,7 +10,7 @@ export const Router = () => {
     <Routes>
       
       <Route path="/" element={<Home />} />
-      <Route path="playlist/:playlistID/:auth" element={<Playlist />} />
+      <Route path="playlist/:playlistID/:token" element={<Playlist />} />
      
     </Routes>
   );
