@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react';
+import { TopNav } from './topNav';
 
 export const Playlist = () => { 
     const {playlistID} = useParams();
@@ -13,14 +14,17 @@ export const Playlist = () => {
     const [reducedImage, setReducedImage] = useState("");
     const [searchValue, setSearchValue] = useState("");
     const [photoResults, setPhotoResults] = useState([]);
+    
 
     useEffect(() => {
 
         getPlaylist();
         
+        photoResults.map(photo => {
+            console.log(photo.urls.regular)
+        })
         
-        
-    }, [])
+    }, [photoResults])
 
     const getPlaylist = async () => {
         const {data} = await axios.get(`https://api.spotify.com/v1/playlists/${playlistID}`, {
@@ -41,13 +45,8 @@ export const Playlist = () => {
     const unsplashSearch = async () => {
         const {data} = await axios.get(`https://api.unsplash.com/search/photos?query=${searchValue}&client_id=${client_id}`)
         //console.log(data)
-
-        let photos = []
-        data.results.map(result => {
-            photos.push(result.urls.regular)
-        })
-        setPhotoResults(photos)
-        console.log(photos)
+        setPhotoResults(data.results)
+        
     }
 
 
@@ -130,7 +129,8 @@ export const Playlist = () => {
 
     return(
     <div>
-        <a href="/" >Home</a>
+        <TopNav />
+        <div className="container mt-5 pt-4">
         <h1>{playlist.name}</h1>
         <div className="center">
             <img src={playlist.images[0].url} width="200px" height="200px"/>
@@ -141,9 +141,24 @@ export const Playlist = () => {
             <button onClick={() => unsplashSearch()} text="Search">Search</button>
         </div>
 
+        <div className="grid-container">
+        {photoResults.length > 0 &&
+            
+            photoResults.map((photo) => (
+                <div className="">
+                    <img src={photo.urls.thumb} width="200px"/>
+                </div>
+            ))
+        }
+        </div>
+        </div>
+        
+        
+
         
 
 
 
-    </div>)
+    </div>
+    )
 }
