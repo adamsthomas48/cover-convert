@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react';
 import { TopNav } from './topNav';
+import { Button } from 'react-bootstrap';
 
 export const Playlist = () => { 
     const {playlistID} = useParams();
@@ -19,10 +20,6 @@ export const Playlist = () => {
     useEffect(() => {
 
         getPlaylist();
-        
-        photoResults.map(photo => {
-            console.log(photo.urls.regular)
-        })
         
     }, [photoResults])
 
@@ -100,20 +97,21 @@ export const Playlist = () => {
         let reduced_base64 = resized_base64.replace(/^data:image\/png;base64,/, '')
         reduced_base64.replace(/^data:image\/jpeg;base64,/, '')
         setReducedImage(reduced_base64)
-        console.log(reduced_base64)
-        return resized_base64;
+        //console.log(reduced_base64)
+        return reduced_base64;
     }
 
-    const putImage = async (playlistId) => {
+    const putImage = async (url) => {
         // TODO: Put request to spotify api to upload image
-        const uri = await getDataBlob(photoURL)
+        const uri = await getDataBlob(url)
         const reduced_base64 = await reduce_image_file_size(uri)
         
+        console.log(reduced_base64)
         
 
         const options = {
             method: 'PUT',
-            url: `https://api.spotify.com/v1/playlists/${playlistId}/images`,
+            url: `https://api.spotify.com/v1/playlists/${playlistID}/images`,
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "image/jpeg",
@@ -146,7 +144,8 @@ export const Playlist = () => {
             
             photoResults.map((photo) => (
                 <div className="">
-                    <img src={photo.urls.thumb} width="200px"/>
+                    <img src={photo.urls.regular} width="200px"/>
+                    <Button onClick={() => putImage(photo.urls.thumb)}>Add to Playlist</Button>
                 </div>
             ))
         }
