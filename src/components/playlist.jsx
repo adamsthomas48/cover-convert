@@ -41,7 +41,7 @@ export const Playlist = () => {
 
     const unsplashSearch = async () => {
         const {data} = await axios.get(`https://api.unsplash.com/search/photos?query=${searchValue}&client_id=${client_id}`)
-        //console.log(data)
+        console.log(data)
         setPhotoResults(data.results)
         
     }
@@ -66,7 +66,7 @@ export const Playlist = () => {
         return uri;
       }
 
-      const reduce_image_file_size = async (base64Str, MAX_WIDTH = 200, MAX_HEIGHT = 200) => {
+      const reduce_image_file_size = async (base64Str, MAX_WIDTH = 900, MAX_HEIGHT = 900) => {
         let resized_base64 = await new Promise((resolve) => {
             let img = new Image()
             img.src = base64Str
@@ -145,7 +145,7 @@ export const Playlist = () => {
             photoResults.map((photo) => (
                 <div className="">
                     <img src={photo.urls.regular} width="200px"/>
-                    <Button onClick={() => putImage(photo.urls.thumb)}>Add to Playlist</Button>
+                    <Button onClick={() => putImage(photo.urls.small)}>Add to Playlist</Button>
                 </div>
             ))
         }

@@ -1,14 +1,25 @@
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container, NavDropdown, Button } from 'react-bootstrap';
+
 
 export const TopNav = () => {
 
     return(
 
         <Navbar fixed="top" bg="dark" variant="dark" expand='sm' className="">
-            <Container className="reduced justify-content-center">
-            <Navbar.Brand href="#">Cover Convert</Navbar.Brand>
-            
-            </Container>
+            <Navbar bg="dark" variant="dark" >
+                <Container className="justify-content-center">
+                    <Navbar.Brand href="#">
+                        <img
+                        alt=""
+                        src="/logo-white.png"
+                        width="30"
+                        height="30"
+                        className="d-inline-block align-top"
+                        />{' '}
+                    Cover Convert
+                    </Navbar.Brand>
+                </Container>
+        </Navbar>
         </Navbar>
 
     ) 
