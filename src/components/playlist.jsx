@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react';
 import { TopNav } from './topNav';
-import { Button } from 'react-bootstrap';
+import { Button, Form, InputGroup } from 'react-bootstrap';
 
 export const Playlist = () => { 
     const {playlistID} = useParams();
@@ -134,9 +134,20 @@ export const Playlist = () => {
             <img src={playlist.images[0].url} width="200px" height="200px"/>
         </div>
         
-        <div className="center mt-5">
-            <input type="text" placeholder='Search Unsplash' onChange={(e) => setSearchValue(e.target.value)}/>
-            <button onClick={() => unsplashSearch()} text="Search">Search</button>
+        <div className="row justify-content-center mt-4">
+            <div className="col-lg-6">
+                <InputGroup size="lg">
+                               
+                    <Form.Control
+                    placeholder="Search Unsplash"
+                    aria-label="Large"
+                    aria-describedby="inputGroup-sizing-sm"
+                    onChange={(e) => setSearchValue(e.target.value)}
+                    />
+                    <Button variant="outline-secondary" onClick={() => unsplashSearch()}>Button</Button>
+                </InputGroup>
+            </div>
+            
         </div>
 
         <div className="grid-container">
@@ -151,10 +162,7 @@ export const Playlist = () => {
         }
         </div>
         </div>
-        
-        
 
-        
 
 
 
