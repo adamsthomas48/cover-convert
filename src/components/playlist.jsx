@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react';
 import { TopNav } from './topNav';
-import { Button, Form, InputGroup } from 'react-bootstrap';
+import { Button, Form, InputGroup, Image, Col, Row } from 'react-bootstrap';
 
 export const Playlist = () => { 
     const {playlistID} = useParams();
@@ -98,6 +98,8 @@ export const Playlist = () => {
         reduced_base64.replace(/^data:image\/jpeg;base64,/, '')
         setReducedImage(reduced_base64)
         //console.log(reduced_base64)
+
+        
         return reduced_base64;
     }
 
@@ -129,7 +131,7 @@ export const Playlist = () => {
     <div>
         <TopNav />
         <div className="container mt-5 pt-4">
-        <h1>{playlist.name}</h1>
+        <h1 className="mt-4">{playlist.name}</h1>
         <div className="center">
             <img src={playlist.images[0].url} width="200px" height="200px"/>
         </div>
@@ -151,15 +153,18 @@ export const Playlist = () => {
         </div>
 
         <div className="grid-container">
+ 
         {photoResults.length > 0 &&
             
             photoResults.map((photo) => (
-                <div className="">
-                    <img src={photo.urls.regular} width="200px"/>
+                <div>
+                    
+                    <Image src={photo.urls.regular} thumbnail="true" />
                     <Button onClick={() => putImage(photo.urls.small)}>Add to Playlist</Button>
                 </div>
             ))
         }
+     
         </div>
         </div>
 
