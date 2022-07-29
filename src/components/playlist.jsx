@@ -2,7 +2,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react';
 import { TopNav } from './topNav';
-import { Button, Form, InputGroup, Image, Col, Row } from 'react-bootstrap';
+import { Button, Form, InputGroup, Image as BsImage, Col, Row } from 'react-bootstrap';
+import { splitArray } from '../api';
 
 export const Playlist = () => { 
     const {playlistID} = useParams();
@@ -21,7 +22,7 @@ export const Playlist = () => {
 
         getPlaylist();
         
-    }, [photoResults])
+    })
 
     const getPlaylist = async () => {
         const {data} = await axios.get(`https://api.spotify.com/v1/playlists/${playlistID}`, {
@@ -42,7 +43,8 @@ export const Playlist = () => {
     const unsplashSearch = async () => {
         const {data} = await axios.get(`https://api.unsplash.com/search/photos?query=${searchValue}&client_id=${client_id}`)
         console.log(data)
-        setPhotoResults(data.results)
+        let images = splitArray(data.results)
+        setPhotoResults(images)
         
     }
 
@@ -125,6 +127,23 @@ export const Playlist = () => {
         console.log("putImage")
         const res = await axios(options);
         console.log(res.data)
+
+        function ImageGridItem({ image }) {
+            const style = {
+              gridColumnEnd: `span ${getSpanEstimate(image.width)}`,
+              gridRowEnd: `span ${getSpanEstimate(image.height)}`,
+            }
+          
+            return <img style={style} src={image.url} alt={image.alt} />
+          }
+          
+          function getSpanEstimate(size) {
+            if (size > 250) {
+              return 2
+            }
+          
+            return 1
+          }
     }
 
     return(
@@ -136,7 +155,7 @@ export const Playlist = () => {
             <img src={playlist.images[0].url} width="200px" height="200px"/>
         </div>
         
-        <div className="row justify-content-center mt-4">
+        <div className="row justify-content-center mt-4 top-stick">
             <div className="col-lg-6">
                 <InputGroup size="lg">
                                
@@ -146,26 +165,37 @@ export const Playlist = () => {
                     aria-describedby="inputGroup-sizing-sm"
                     onChange={(e) => setSearchValue(e.target.value)}
                     />
-                    <Button variant="outline-secondary" onClick={() => unsplashSearch()}>Button</Button>
+                    <Button variant="dark" onClick={() => unsplashSearch()}>Search</Button>
                 </InputGroup>
             </div>
             
         </div>
-
-        <div className="grid-container">
- 
-        {photoResults.length > 0 &&
-            
-            photoResults.map((photo) => (
-                <div>
+        
+        <Row className="mt-5">
+            <Col lg={6}>
+                {photoResults.length > 0 &&
                     
-                    <Image src={photo.urls.regular} thumbnail="true" />
-                    <Button onClick={() => putImage(photo.urls.small)}>Add to Playlist</Button>
-                </div>
-            ))
-        }
-     
-        </div>
+                    photoResults[0].map((photo) => (
+                        <div className="mb-4 hover">
+                            <BsImage src={photo.urls.regular} alt={photo.alt_description} width="100%" />
+                        </div>
+                        
+                    ))
+                }
+            </Col>
+            <Col lg={6}>
+                {photoResults.length > 0 &&
+                    
+                    photoResults[1].map((photo) => (
+                        <div className="mb-4 hover">
+                            <BsImage src={photo.urls.regular} alt={photo.alt_description} width="100%" />
+                        </div>
+                        
+                    ))
+                }
+            </Col>
+        
+        </Row>
         </div>
 
 
