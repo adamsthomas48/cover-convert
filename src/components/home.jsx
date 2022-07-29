@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router';
 import axios from 'axios'
 import { PlaylistCard } from './playlist_card';
 import { TopNav } from './topNav';
+import logo from '../logo-green.png';
+import { Button, Form, InputGroup, Image as BsImage, Col, Row } from 'react-bootstrap';
 
 
 export const Home = () => { 
@@ -134,15 +136,13 @@ export const Home = () => {
 
       
 
-
-
   
       return (
           <div>
-                <TopNav/>
+            <TopNav/>
               <div className="container">  
               <header className="mt-5 pt-5">
-                  <h1>Cover Convert</h1>
+                  <BsImage src={logo} className="justify-content-center" alt="logo" width="30%" />
                   {!token ?  
                       <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${scopes}`}>Login
                           to Spotify</a>
