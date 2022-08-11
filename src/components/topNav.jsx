@@ -20,7 +20,7 @@ export const TopNav = () => {
                     Cover Convert
                     </Navbar.Brand>
                 </Container>
-        </Navbar>
+            </Navbar>
         </Navbar>
 
     ) 

@@ -55,52 +55,52 @@ export const Playlist = () => {
     <div>
         <TopNav />
         <div className="container mt-5 pt-4">
-        <h1 className="mt-4">{playlist.name}</h1>
-        <div className="center">
-            <img src={playlist.images[0].url} width="200px" height="200px"/>
-        </div>
-        
-        <div className="row justify-content-center mt-4 top-stick">
-            <div className="col-lg-6">
-                <InputGroup size="lg">
-                               
-                    <Form.Control
-                    placeholder="Search Unsplash"
-                    aria-label="Large"
-                    aria-describedby="inputGroup-sizing-sm"
-                    onChange={(e) => setSearchValue(e.target.value)}
-                    />
-                    <Button variant="dark" onClick={() => unsplashSearch()}>Search</Button>
-                </InputGroup>
+            <h1 className="mt-4">{playlist.name}</h1>
+            <div className="center">
+                <img src={playlist.images[0].url} width="200px" height="200px"/>
             </div>
             
-        </div>
-        
-        <Row className="mt-5">
-            <Col lg={6}>
-                {photoResults.length > 0 &&
-                    
-                    photoResults[0].map((photo) => (
-                        <div className="mb-4 hover">
-                            <BsImage src={photo.urls.regular} alt={photo.alt_description} width="100%" onClick={() => putImage(photo.urls.thumb, playlistID, token)} />
-                        </div>
+            <div className="row justify-content-center mt-4 top-stick">
+                <div className="col-lg-6">
+                    <InputGroup size="lg">
+                                
+                        <Form.Control
+                        placeholder="Search Unsplash"
+                        aria-label="Large"
+                        aria-describedby="inputGroup-sizing-sm"
+                        onChange={(e) => setSearchValue(e.target.value)}
+                        />
+                        <Button variant="dark" onClick={() => unsplashSearch()}>Search</Button>
+                    </InputGroup>
+                </div>
+                
+            </div>
+            
+            <Row className="mt-5">
+                <Col lg={6}>
+                    {photoResults.length > 0 &&
                         
-                    ))
-                }
-            </Col>
-            <Col lg={6}>
-                {photoResults.length > 0 &&
-                    
-                    photoResults[1].map((photo) => (
-                        <div className="mb-4 hover">
-                            <BsImage src={photo.urls.regular} alt={photo.alt_description} width="100%" onClick={() => putImage(photo.urls.thumb, playlistID, token)}/>
-                        </div>
+                        photoResults[0].map((photo) => (
+                            <div className="mb-4 hover">
+                                <BsImage src={photo.urls.regular} alt={photo.alt_description} width="100%" onClick={() => putImage(photo.urls.thumb, playlistID, token)} />
+                            </div>
+                            
+                        ))
+                    }
+                </Col>
+                <Col lg={6}>
+                    {photoResults.length > 0 &&
                         
-                    ))
-                }
-            </Col>
-        
-        </Row>
+                        photoResults[1].map((photo) => (
+                            <div className="mb-4 hover">
+                                <BsImage src={photo.urls.regular} alt={photo.alt_description} width="100%" onClick={() => putImage(photo.urls.thumb, playlistID, token)}/>
+                            </div>
+                            
+                        ))
+                    }
+                </Col>
+            
+            </Row>
         </div>
 
 

@@ -70,6 +70,7 @@ export const Home = () => {
       }, [])
 
       if(!loggedIn) {
+        navigate("/login")
         return (
             <div>
                 <h1>Login</h1>
@@ -93,48 +94,8 @@ export const Home = () => {
           setLoggedIn(false)
           setPlaylists([])
           window.localStorage.removeItem("token")
+          navigate("/login")
       }
-
-      const searchArtists = async (e) => {
-        e.preventDefault()
-        const {data} = await axios.get("https://api.spotify.com/v1/search", {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            params: {
-                q: searchKey,
-                type: "artist"
-            }
-        })
-    
-        setArtists(data.artists.items)
-        console.log(data)
-      }
-
-      const getPlaylists = async (authToken) => {
-
-        const options = {
-            method: 'GET',
-            url: 'https://api.spotify.com/v1/me/playlists',
-            params: {
-                limit: 50,
-            },
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            }
-        }
-
-        const res = await axios(options);
-        console.log(res.data)
-        setPlaylists(res.data.items)
-        setLoading(false)
-                   
-          
-      }
-
-      
 
   
       return (

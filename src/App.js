@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react';
 import './App.css';
 import { Router } from './components/router'
 import { HashRouter } from 'react-router-dom';
+import './App.scss';
 
 
 export const App = () => {

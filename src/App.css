@@ -1,3 +1,63 @@
+.body {
+  /* make whole page background black and text white */
+
+  background: black;
+  height: 100vh;
+  width: 100vw;
+  color: white;
+
+}
+
+.button {
+  box-sizing: border-box;
+
+/* Auto layout */
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 24px;
+
+  position: absolute;
+  width: 296px;
+  height: 48px;
+  left: 608px;
+  top: 576px;
+
+  background: #05E0E0;
+  mix-blend-mode: screen;
+  border: 3px solid #05E0E0;
+  border-radius: 12px;
+}
+
+.button span {
+  width: 120px;
+  height: 25px;
+
+  font-family: 'Saira';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 25px;
+  text-align: center;
+
+  color: #FFFFFF;
+
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+
+
+
+
+
+
 .App {
   text-align: center;
 }
@@ -124,7 +184,7 @@
 
 .top-stick {
   position: sticky;
-  top: 10%;
+  top: .4rem;
   z-index: 1;
 }
 
