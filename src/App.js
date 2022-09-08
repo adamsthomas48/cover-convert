@@ -1,44 +1,50 @@
-import logo from './logo.svg';
-import {useEffect, useState} from 'react';
-import './App.css';
-import { Router } from './components/router'
-import { HashRouter } from 'react-router-dom';
-import './App.scss';
-
+import logo from "./logo.svg";
+import { useEffect, useState } from "react";
+import "./App.css";
+import { Router } from "./components/router";
+import { HashRouter } from "react-router-dom";
+import { UserContext } from "./UserContext";
+import "./App.scss";
 
 export const App = () => {
-  const CLIENT_ID = "e49897e1b71048d79ce37187284a983a"
-  const REDIRECT_URI = "http://localhost:3000"
-  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
-  const RESPONSE_TYPE = "token"
+    const CLIENT_ID = "e49897e1b71048d79ce37187284a983a";
+    const REDIRECT_URI = "http://localhost:3000";
+    const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+    const RESPONSE_TYPE = "token";
 
-
-  const [token, setToken] = useState("")
+    const [token, setToken] = useState("");
 
     useEffect(() => {
-        const hash = window.location.hash
-        let token = window.localStorage.getItem("token")
+        const hash = window.location.hash;
+        let token = window.localStorage.getItem("token");
 
         if (!token && hash) {
-            token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
+            token = hash
+                .substring(1)
+                .split("&")
+                .find((elem) => elem.startsWith("access_token"))
+                .split("=")[1];
 
-            window.location.hash = ""
-            window.localStorage.setItem("token", token)
+            window.location.hash = "";
+            window.localStorage.setItem("token", token);
         }
 
-        setToken(token)
-
-    }, [])
-
-    const logout = () => {
-        setToken("")
-        window.localStorage.removeItem("token")
-    }
+        setToken(token);
+    }, []);
 
     return (
         <div className="App">
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossOrigin="anonymous" />
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossOrigin="anonymous"></script>
+            <link
+                href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+                rel="stylesheet"
+                integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+                crossOrigin="anonymous"
+            />
+            <script
+                src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+                crossOrigin="anonymous"
+            ></script>
             {/* <header className="App-header">
                 <h1>Spotify React</h1>
                 {!token ?
@@ -46,11 +52,13 @@ export const App = () => {
                         to Spotify</a>
                     : <button onClick={logout}>Logout</button>}
             </header> */}
-            <HashRouter>
-                <Router />
-            </HashRouter>
+            <UserContext.Provider value={{token, setToken}}>
+                <HashRouter>
+                    <Router />
+                </HashRouter>
+            </UserContext.Provider>
         </div>
     );
-}
+};
 
 export default App;
