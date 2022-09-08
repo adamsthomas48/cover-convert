@@ -4,6 +4,7 @@ import "./App.css";
 import { Router } from "./components/router";
 import { HashRouter } from "react-router-dom";
 import { UserContext } from "./UserContext";
+import { PlaylistContext } from "./PlaylistContext";
 import "./App.scss";
 
 export const App = () => {
@@ -13,6 +14,8 @@ export const App = () => {
     const RESPONSE_TYPE = "token";
 
     const [token, setToken] = useState("");
+    const [playlistId, setPlaylistId] = useState("");
+    const [photoUrl, setPhotoUrl] = useState("");
 
     useEffect(() => {
         const hash = window.location.hash;
@@ -52,10 +55,12 @@ export const App = () => {
                         to Spotify</a>
                     : <button onClick={logout}>Logout</button>}
             </header> */}
-            <UserContext.Provider value={{token, setToken}}>
-                <HashRouter>
-                    <Router />
-                </HashRouter>
+            <UserContext.Provider value={{ token, setToken }}>
+                <PlaylistContext.Provider value={{ playlistId, setPlaylistId, photoUrl, setPhotoUrl }}>
+                    <HashRouter>
+                        <Router />
+                    </HashRouter>
+                </PlaylistContext.Provider>
             </UserContext.Provider>
         </div>
     );

@@ -1,7 +1,9 @@
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
+import {PlaylistContext} from '../PlaylistContext';
 import { TopNav } from "./topNav";
+import { useNavigate } from "react-router";
 import {
     Button,
     Form,
@@ -24,9 +26,13 @@ export const Playlist = () => {
     const [searchValue, setSearchValue] = useState("");
     const [photoResults, setPhotoResults] = useState([]);
     const [hasSearched, setHasSearched] = useState(false);
+    const navigate = useNavigate();
+
+    const {playlistId, setPlaylistId, photoUrl, setPhotoUrl} = useContext(PlaylistContext);
 
     useEffect(() => {
         getPlaylist();
+        setPlaylistId(playlistID);
     });
 
     const getPlaylist = async () => {
@@ -57,6 +63,11 @@ export const Playlist = () => {
         setLoading(false);
         setHasSearched(true);
     };
+
+    const goToCrop = async (url) => {
+        setPhotoUrl(url);
+        navigate('playlist/crop');
+    }
 
     return (
         <div>
@@ -100,13 +111,10 @@ export const Playlist = () => {
                                         src={photo.urls.regular}
                                         alt={photo.alt_description}
                                         width="100%"
-                                        onClick={() =>
-                                            putImage(
-                                                photo.urls.thumb,
-                                                playlistID,
-                                                token
-                                            )
-                                        }
+                                        onClick={() => {
+                                            setPhotoUrl(photo.urls.regular);
+                                            navigate('/playlist/crop');
+                                        }}
                                     />
                                 </div>
                             ))}
@@ -118,13 +126,10 @@ export const Playlist = () => {
                                         src={photo.urls.regular}
                                         alt={photo.alt_description}
                                         width="100%"
-                                        onClick={() =>
-                                            putImage(
-                                                photo.urls.thumb,
-                                                playlistID,
-                                                token
-                                            )
-                                        }
+                                        onClick={() => {
+                                            setPhotoUrl(photo.urls.regular);
+                                            navigate('/playlist/crop');
+                                        }}
                                     />
                                 </div>
                             ))}
