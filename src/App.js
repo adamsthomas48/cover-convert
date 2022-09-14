@@ -5,6 +5,7 @@ import { Router } from "./components/router";
 import { HashRouter } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import { PlaylistContext } from "./PlaylistContext";
+import ReactCrop from 'react-image-crop'
 import "./App.scss";
 
 export const App = () => {

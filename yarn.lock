@@ -7412,10 +7412,10 @@
   "resolved" "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.11.tgz"
   "version" "6.0.11"
 
-"react-image-crop@^10.0.6":
-  "integrity" "sha512-Mb7eKW1jAOnvRv8qpxARE26evl7Vw6VzFwM3jxpPRI9KmBs/akqWepot2tY+9FWWPhzclAoftgHNdhesPe/K4g=="
-  "resolved" "https://registry.npmjs.org/react-image-crop/-/react-image-crop-10.0.6.tgz"
-  "version" "10.0.6"
+"react-image-crop@^10.0.7":
+  "integrity" "sha512-doV3sz101q9IaTWlx+DlErJ+BUknJ5CMVIRV72thWC3Fn5bg2XWoft7FbbrFGIr46zYrKKS9QuWNEzNkaqRvfQ=="
+  "resolved" "https://registry.npmjs.org/react-image-crop/-/react-image-crop-10.0.7.tgz"
+  "version" "10.0.7"
   dependencies:
     "clsx" "^1.2.1"
 

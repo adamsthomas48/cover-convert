@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import {PlaylistContext} from '../PlaylistContext';
+import { PlaylistContext } from "../PlaylistContext";
 import { TopNav } from "./topNav";
 import { useNavigate } from "react-router";
 import {
@@ -28,7 +28,8 @@ export const Playlist = () => {
     const [hasSearched, setHasSearched] = useState(false);
     const navigate = useNavigate();
 
-    const {playlistId, setPlaylistId, photoUrl, setPhotoUrl} = useContext(PlaylistContext);
+    const { playlistId, setPlaylistId, photoUrl, setPhotoUrl } =
+        useContext(PlaylistContext);
 
     useEffect(() => {
         getPlaylist();
@@ -63,11 +64,6 @@ export const Playlist = () => {
         setLoading(false);
         setHasSearched(true);
     };
-
-    const goToCrop = async (url) => {
-        setPhotoUrl(url);
-        navigate('playlist/crop');
-    }
 
     return (
         <div>
@@ -113,7 +109,7 @@ export const Playlist = () => {
                                         width="100%"
                                         onClick={() => {
                                             setPhotoUrl(photo.urls.regular);
-                                            navigate('/playlist/crop');
+                                            navigate("/playlist/crop");
                                         }}
                                     />
                                 </div>
@@ -128,7 +124,7 @@ export const Playlist = () => {
                                         width="100%"
                                         onClick={() => {
                                             setPhotoUrl(photo.urls.regular);
-                                            navigate('/playlist/crop');
+                                            navigate("/playlist/crop");
                                         }}
                                     />
                                 </div>
