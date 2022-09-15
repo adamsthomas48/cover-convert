@@ -1,6 +1,8 @@
 import { PlaylistContext } from "../PlaylistContext";
+import { UserContext } from "../UserContext";
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { TopNav } from "./topNav";
+import { putImage } from "../api";
 import ReactCrop, {
     centerCrop,
     makeAspectCrop,
@@ -20,14 +22,16 @@ import {
 export const CropImage = (props) => {
     const { playlistId, setPlaylistId, photoUrl, setPhotoUrl } =
         useContext(PlaylistContext);
-    console.log(playlistId);
-    console.log(photoUrl);
+    const { token, setToken } = useContext(UserContext);
     const [crop, setCrop] = useState(null);
     const [completedCrop, setCompletedCrop] = useState(null);
     const previewCanvasRef = useRef < HTMLCanvasElement > null;
 
-    const cropped = (cropImage) => {
+    console.log(token);
+
+    const cropComplete = (cropImage) => {
         console.log(cropImage);
+        putImage(photoUrl, playlistId, token, cropImage.x, cropImage.y, cropImage.width);
     };
 
     return (
@@ -40,7 +44,7 @@ export const CropImage = (props) => {
                     <ReactCrop
                         crop={crop}
                         onChange={(_, percentCrop) => setCrop(percentCrop)}
-                        onComplete={(c) => cropped(c)}
+                        onComplete={(c) => cropComplete(c)}
                         aspect={1}
                     >
                         <img src={photoUrl} />
