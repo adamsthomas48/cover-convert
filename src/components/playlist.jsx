@@ -19,7 +19,6 @@ export const Playlist = () => {
     const { token } = useParams();
     const client_id = "EtnnpBNihd-hEnnfF5XKAP-hQZdIlKwRYzv3E6-iJPw";
 
-    const [playlist, setPlaylist] = useState(null);
     const [loading, setLoading] = useState(true);
     const [photoURL, setPhotoURL] = useState("");
     const [reducedImage, setReducedImage] = useState("");
@@ -28,12 +27,11 @@ export const Playlist = () => {
     const [hasSearched, setHasSearched] = useState(false);
     const navigate = useNavigate();
 
-    const { playlistId, setPlaylistId, photoUrl, setPhotoUrl } =
+    const { playlist, setPlaylist, photoUrl, setPhotoUrl } =
         useContext(PlaylistContext);
 
     useEffect(() => {
         getPlaylist();
-        setPlaylistId(playlistID);
     });
 
     const getPlaylist = async () => {
@@ -73,8 +71,7 @@ export const Playlist = () => {
                 <div className="center">
                     <img
                         src={playlist.images[0].url}
-                        width="200px"
-                        height="200px"
+                        
                         alt={playlist.name}
                     />
                 </div>

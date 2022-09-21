@@ -5307,6 +5307,11 @@
     "html-escaper" "^2.0.0"
     "istanbul-lib-report" "^3.0.0"
 
+"j-i-c@^2.0.2":
+  "integrity" "sha512-LnocH6iMIEj4VtvHzhzz8TuDCr13b1QJvVGpbVseMJqgB7GkdN41/dhVnyM/uoWDUXvK/bVCov4x685cihyJ5Q=="
+  "resolved" "https://registry.npmjs.org/j-i-c/-/j-i-c-2.0.2.tgz"
+  "version" "2.0.2"
+
 "jake@^10.8.5":
   "integrity" "sha512-sVpxYeuAhWt0OTWITwT98oyV0GsXyMlXCF+3L1SuafBVUIr/uILGRB+NqwkzhgXKvoJpDIpQvqkUALgdmQsQxw=="
   "resolved" "https://registry.npmjs.org/jake/-/jake-10.8.5.tgz"

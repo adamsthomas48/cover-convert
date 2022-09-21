@@ -15,7 +15,7 @@ export const App = () => {
     const RESPONSE_TYPE = "token";
 
     const [token, setToken] = useState("");
-    const [playlistId, setPlaylistId] = useState("");
+    const [playlist, setPlaylist] = useState("");
     const [photoUrl, setPhotoUrl] = useState("");
 
     useEffect(() => {
@@ -57,7 +57,7 @@ export const App = () => {
                     : <button onClick={logout}>Logout</button>}
             </header> */}
             <UserContext.Provider value={{ token, setToken }}>
-                <PlaylistContext.Provider value={{ playlistId, setPlaylistId, photoUrl, setPhotoUrl }}>
+                <PlaylistContext.Provider value={{ playlist, setPlaylist, photoUrl, setPhotoUrl }}>
                     <HashRouter>
                         <Router />
                     </HashRouter>

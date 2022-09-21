@@ -20,18 +20,16 @@ import {
 } from "react-bootstrap";
 
 export const CropImage = (props) => {
-    const { playlistId, setPlaylistId, photoUrl, setPhotoUrl } =
+    const { playlist, setPlaylist, photoUrl, setPhotoUrl } =
         useContext(PlaylistContext);
     const { token, setToken } = useContext(UserContext);
     const [crop, setCrop] = useState(null);
     const [completedCrop, setCompletedCrop] = useState(null);
     const previewCanvasRef = useRef < HTMLCanvasElement > null;
 
-    console.log(token);
-
     const cropComplete = (cropImage) => {
         console.log(cropImage);
-        putImage(photoUrl, playlistId, token, cropImage.x, cropImage.y, cropImage.width);
+        putImage(photoUrl, playlist.id, token, cropImage.x, cropImage.y, cropImage.width);
     };
 
     return (
@@ -52,6 +50,7 @@ export const CropImage = (props) => {
                 </div>
                 <div class="col-lg-6 justfiy-content-center">
                     <Button>Apply Crop</Button>
+                    <BsImage src={playlist.images[0].url} alt = {playlist.name} width="100%" />
                 </div>
             </div>
 
